@@ -4,6 +4,8 @@ This project is aboud building a classic to-do list application inspired by http
 
 <img src="./frontend/design/demo-1.png" width="500" />
 
+The project is full-stack, built with the MERN stack, which stands for MongoDB, ExpressJS, React, and NodeJS. 
+
 # Backend
 
 The backend of this project is in the `backend` folder. It is implemented with Node.js and Express.js. The database is MongoDB.
@@ -18,7 +20,5 @@ To run the backend, you need to navigate to the `backend` folder first, and foll
 
 The frontend of this project is in the `frontend` folder. Before you run the frontend, please make sure that you have started the backend first. The backend should run without issues on port 8000.
 
-To run the frontend, you can start the project with `npm start`.
-
-To test the frontend, you can run `npm test`.
+Before running the frontend, you need to install the dependencies by running `npm install`. To run the frontend, you can start the project with `npm start`. To test the frontend, you can run `npm test`.
 
