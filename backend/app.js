@@ -1,28 +1,31 @@
 const express = require('express');
-const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const todoRoutes = require('./routes/todoRoutes');
+const router = require('./routes/todoRoutes');
+const cors = require('cors');
 
+// Create Express server
 const app = express();
+// set the port
 const port = process.env.PORT || 8000;
 
-app.use(cors());
+// Middleware to parse JSON bodies
 app.use(express.json());
 
-// Connect to MongoDB
-const uri = process.env.ATLAS_URI;
-console.log(uri);
-mongoose.connect(uri);
+// Middleware to enable CORS
+app.use(cors());
 
+// Connect to MongoDB database
+mongoose.connect(process.env.ATLAS_URI);
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log('MongoDB database connection established successfully');
 });
 
 // Routes
-app.use('/api', todoRoutes);
+app.use('/todos', router);
 
+// start the server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
 });

@@ -1,47 +1,63 @@
-const Todo = require('../models/Todo');
+const {Todo} = require('../models/Todo');
 
-// Create a new todo
-exports.createTodo = async (req, res) => {
-  try {
-    const todo = new Todo(req.body);
-    await todo.save();
-    res.status(201).json(todo);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-// Get all todos
+// get all todo items: controller function
 exports.getAllTodos = async (req, res) => {
   try {
     const todos = await Todo.find();
     res.status(200).json(todos);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Something is wrong' });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// delete a todo
-exports.deleteATodo = async (req, res) => {
+// get a single todo item: controller function
+// URI: /todos/:_id
+exports.getSingleTodo = async (req, res) => {
   try {
-    const todo = await Todo.findByIdAndDelete(req.params.id);
-    res.status(200).json({ result: true });
+    const todoId = req.params._id;
+    const todo = await Todo.findById(todoId);
+    res.status(200).json(todo);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Something is wrong' });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// update a todo
-exports.updateATodo = async (req, res) => {
+// create a new todo item: controller function
+exports.createTodo = async (req, res) => {
   try {
-    const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
+    const todo = req.body;
+    const newTodo = new Todo(todo);
+    await newTodo.save();
+    res.status(201).json(newTodo);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// update a todo item: controller function
+// URI: /todos/:_id
+exports.updateTodo = async (req, res) => {
+  try {
+    const todoId = req.params._id;
+    const updatedTodo = req.body;
+
+    const todo = await Todo.findByIdAndUpdate(todoId, updatedTodo, {
       new: true,
     });
     res.status(200).json(todo);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Something is wrong' });
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// delete a todo item: controller function
+// URI: /todos/:_id
+exports.deleteTodo = async (req, res) => {
+  try {
+    const todoId = req.params._id;
+    await Todo.findByIdAndDelete(todoId);
+    res.status(204).json();
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
